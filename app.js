@@ -50,12 +50,19 @@ harcamayiShowScreen(yeniHarcama)
 //! harcamaları dom daki table a bastırma
 
 const harcamayiShowScreen=({id,miktar,tarih,aciklama})=>{
-    harcamaBody.innerHTML+=
+    harcamaBody.innerHTML+= `
     <tr>
-        <td>${tarih}</td>
-        <td>${aciklama}</td>
-        <td>${miktar}</td>
-        <td><i class="fa-solid fa-trash-can text-danger"  type="button"></i></td>
+        <td class="bg-warning">${tarih}</td>
+        <td class="bg-warning">${aciklama}</td>
+        <td class="bg-warning">${miktar}</td>
+        <td class="bg-warning"><i class="fa-solid fa-trash-can text-danger"  type="button"></i></td>
     </tr>
+`;
 
-}
+document.querySelectorAll(".fa-trash-can").forEach((sil)=>{
+    sil.onclick=()=>{
+        sil.parentElement.parentElement.remove()
+    }
+})
+};
+
