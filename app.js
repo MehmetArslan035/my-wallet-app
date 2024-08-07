@@ -44,7 +44,7 @@ const yeniHarcama={
 harcamaListesi.push(yeniHarcama)
 
 harcamayiShowScreen(yeniHarcama)
-
+harcamaFormu.reset()
 hesaplaAndGuncelle()
 
 })
@@ -76,7 +76,7 @@ ekleFormu.addEventListener("submit",(e)=>{
     
     gelirler = gelirler + Number(gelirInput.value)
     
-    gelirinizTable.textContent=gelirler
+    gelirinizTable.textContent=giderler
     
     })
 
@@ -90,7 +90,21 @@ ekleFormu.addEventListener("submit",(e)=>{
         giderinizTable.textContent = giderler
 
 
-        kalanTable.textContent=gelirler - giderler
+        kalanTable.textContent = gelirler - giderler
 
 
     }
+
+// bilgileri temizle
+
+temizleBtn.onclick=()=>{
+    if(confirm("tüm verileri silmek istediğine emin misiniz?")){
+        harcamaListesi=[]
+
+        gelirler=0
+       
+        hesaplaAndGuncelle()
+
+        harcamaBody.innerHTML=""
+    }
+}
