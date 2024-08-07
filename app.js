@@ -14,7 +14,7 @@ const giderinizTable=document.getElementById("gideriniz")
 const kalanTable=document.getElementById("kalan")
 
 
-variables
+// variables
 let gelirler=0
 let harcamaListesi=[]
 
@@ -43,10 +43,19 @@ const yeniHarcama={
 
 harcamaListesi.push(yeniHarcama)
 
-harcamayiShowScreen(harcamaListesi)
+harcamayiShowScreen(yeniHarcama)
 
 })
 
-const harcamayiShowScreen=(harcamaListesi)=>{
-    console.log(harcamaListesi);
+//! harcamaları dom daki table a bastırma
+
+const harcamayiShowScreen=({id,miktar,tarih,aciklama})=>{
+    harcamaBody.innerHTML+=
+    <tr>
+        <td>${tarih}</td>
+        <td>${aciklama}</td>
+        <td>${miktar}</td>
+        <td><i class="fa-solid fa-trash-can text-danger"  type="button"></i></td>
+    </tr>
+
 }
