@@ -45,6 +45,8 @@ harcamaListesi.push(yeniHarcama)
 
 harcamayiShowScreen(yeniHarcama)
 
+hesaplaAndGuncelle()
+
 })
 
 //! harcamaları dom daki table a bastırma
@@ -66,3 +68,29 @@ document.querySelectorAll(".fa-trash-can").forEach((sil)=>{
 })
 };
 
+//Ekle Formu
+
+ekleFormu.addEventListener("submit",(e)=>{
+
+    e.preventDefault()
+    
+    gelirler = gelirler + Number(gelirInput.value)
+    
+    gelirinizTable.textContent=gelirler
+    
+    })
+
+    // hesapla ve güncelle
+
+    const hesaplaAndGuncelle=()=>{
+        gelirinizTable.textContent = gelirler;
+
+        const giderler= harcamaListesi.reduce((toplam,harcama)=>toplam+Number(harcama.miktar),0)
+
+        giderinizTable.textContent = giderler
+
+
+        kalanTable.textContent=gelirler - giderler
+
+
+    }
