@@ -42,7 +42,8 @@ const yeniHarcama={
 };
 
 harcamaListesi.push(yeniHarcama)
-console.log(harcamaListesi);
+
+harcamayiShowScreen()
 
 
 
