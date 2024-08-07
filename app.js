@@ -1,22 +1,22 @@
-// Selectors
+//?Selectors
 
-// ekle formu
+//* ekle formu
 
-const ekleBtn= document.querySelector("#ekle-btn")
-const gelirInput= document.querySelector("#gelir-input")
-const ekleFormu= document.querySelector("#ekle-formu")
+const ekleBtn = document.querySelector("#ekle-btn");
+const gelirInput = document.querySelector("#gelir-input");
+const ekleFormu = document.querySelector("#ekle-formu");
 
+//*sonuç tablosu
 
-//! sonuc tablosu
+const gelirinizTable = document.getElementById("geliriniz");
+const giderinizTable = document.getElementById("gideriniz");
+const kalanTable = document.getElementById("kalan");
 
-const gelirinizTable= document.getElementById("geliriniz")
-const giderinizTable=document.getElementById("gideriniz")
-const kalanTable=document.getElementById("kalan")
-
-
-// variables
-let gelirler= Number(localStorage.getItem("gelirler"))|| 0;
+//?variables
+let gelirler = Number(localStorage.getItem("gelirler")) || 0;
 let harcamaListesi = JSON.parse(localStorage.getItem("harcamalar")) || []
+
+
 
 //* Harcama Formu
 
@@ -31,89 +31,121 @@ const temizleBtn = document.getElementById("temizle-btn");
 
 //! ilk formu doldurma
 
-harcamaFormu.addEventListener("submit", (e)=>{
-e.preventDefault()
+harcamaFormu.addEventListener("submit", (e) => {
+  e.preventDefault(); //reload u engellemek için
 
-const yeniHarcama={
-    tarih:tarihInput.value,
-    miktar:miktarInput.value,
-    aciklama:harcamaAlaniInput.value,
-    id:new Date().getTime()
-};
+  const yeniHarcama = {
+    tarih: tarihInput.value,
+    miktar: miktarInput.value,
+    aciklama: harcamaAlaniInput.value,
+    id: new Date().getTime(),
+  };
 
-harcamaListesi.push(yeniHarcama);
-
-//TODO lacalStorage
-
-localStorage.setItem("harcamalar", JSON.stringify (harcamaListesi))
+  harcamaListesi.push(yeniHarcama);
 
 
-harcamayiShowScreen(yeniHarcama)
-harcamaFormu.reset()
-hesaplaAndGuncelle()
+  //?localStorage ye diziyi yollayalım
 
-})
+  localStorage.setItem("harcamalar", JSON.stringify(harcamaListesi) )
 
-//! harcamaları dom daki table a bastırma
+  //ekrana bastır
+  harcamayiShowScreen(yeniHarcama);
 
-const harcamayiShowScreen=({id,miktar,tarih,aciklama})=>{
-    harcamaBody.innerHTML+= `
-    <tr>
-        <td class="bg-warning">${tarih}</td>
-        <td class="bg-warning">${aciklama}</td>
-        <td class="bg-warning">${miktar}</td>
-        <td class="bg-warning"><i class="fa-solid fa-trash-can text-danger"  type="button"></i></td>
-    </tr>
+  harcamaFormu.reset();
+  // tarihInput=""
+
+  hesaplaAndGuncelle();
+});
+
+//! harcamaları dom daki table a bastır
+
+const harcamayiShowScreen = ({ id, miktar, tarih, aciklama }) => {
+  // const{id,miktar,tarih,aciklama}=harcamaListesi
+
+  harcamaBody.innerHTML += `
+<tr>
+<td class="bg-warning">${tarih} </td>
+<td class="bg-warning">${aciklama}</td>
+<td class="bg-warning">${miktar} </td>
+<td class="bg-warning"> <i id=${id} class="fa-solid fa-trash-can text-danger"  type="button"></i>  </td>
+</tr>
+
+
 `;
 
-document.querySelectorAll(".fa-trash-can").forEach((sil)=>{
-    sil.onclick=()=>{
-        sil.parentElement.parentElement.remove()
-    }
+  //*silme
+
+  document.querySelectorAll(".fa-trash-can").forEach((sil) => {
+    sil.onclick = () => {
+      sil.parentElement.parentElement.remove();
+// console.log(sil);
+
+
+harcamaListesi=harcamaListesi.filter((a)=>{ a.id !=sil.id
 })
+
+
+localStorage.setItem("harcamalar", JSON.stringify(harcamaListesi))
+
+
+
+    };
+  });
 };
 
-//Ekle Formu
+//! ekle formu
 
-ekleFormu.addEventListener("submit",(e)=>{
+ekleFormu.addEventListener("submit", (e) => {
+  e.preventDefault();
 
-    e.preventDefault()
-    
-    gelirler = gelirler + Number(gelirInput.value)
-    
-    gelirInput.value=""
+  gelirler = gelirler + Number(gelirInput.value);
 
-    gelirinizTable.textContent=giderler
+  gelirInput.value=""
+  // gelirinizTable.textContent=gelirler
+
 localStorage.setItem("gelirler", gelirler)
-    hesaplaAndGuncelle()
-    
-    })
 
-    // hesapla ve güncelle
+  hesaplaAndGuncelle();
+});
 
-    const hesaplaAndGuncelle=()=>{
-        gelirinizTable.textContent = gelirler;
+//! hesapla ve güncelle
 
-        const giderler= harcamaListesi.reduce((toplam,harcama)=>toplam+Number(harcama.miktar),0)
+const hesaplaAndGuncelle = () => {
+  gelirinizTable.textContent = gelirler;
 
-        giderinizTable.textContent = giderler
+  const giderler = harcamaListesi.reduce(
+    (toplam, harcama) => toplam + Number(harcama.miktar),
+    0
+  );
+
+  giderinizTable.textContent = giderler;
+
+  kalanTable.textContent = gelirler - giderler;
+};
 
 
-        kalanTable.textContent = gelirler - giderler
-
-
-    }
-
-// bilgileri temizle
+//!bilgileri temizle
 
 temizleBtn.onclick=()=>{
-    if(confirm("tüm verileri silmek istediğine emin misiniz?")){
-        harcamaListesi=[]
 
-        gelirler=0
-       
-        hesaplaAndGuncelle()
+    if(confirm("tüm verileri silmek istediğine emin misin?")){
+harcamaListesi=[]
 
-        harcamaBody.innerHTML=""
+gelirler=0
+
+hesaplaAndGuncelle()
+
+ harcamaBody.innerHTML=""
+
+
     }
 }
+
+
+//!refresh durrumunda localStroge den veriler ekrana basılsın
+harcamaListesi.forEach((a)=>{
+harcamayiShowScreen(a)
+
+})
+//  harcamayiShowScreen(harcamaListesi);
+hesaplaAndGuncelle();
