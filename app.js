@@ -43,9 +43,10 @@ const yeniHarcama={
 
 harcamaListesi.push(yeniHarcama)
 
-harcamayiShowScreen()
-
-
-
+harcamayiShowScreen(harcamaListesi)
 
 })
+
+const harcamayiShowScreen=(harcamaListesi)=>{
+    console.log(harcamaListesi);
+}
