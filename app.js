@@ -7,7 +7,7 @@ const gelirInput= document.querySelector("#gelir-input")
 const ekleFormu= document.querySelector("#ekle-formu")
 
 
-//? sonuc tablosu
+//! sonuc tablosu
 
 const gelirinizTable= document.getElementById("geliriniz")
 const giderinizTable=document.getElementById("gideriniz")
@@ -15,8 +15,8 @@ const kalanTable=document.getElementById("kalan")
 
 
 // variables
-let gelirler=0
-let harcamaListesi=[]
+let gelirler= Number(localStorage.getItem("gelirler"))|| 0;
+let harcamaListesi = JSON.parse(localStorage.getItem("harcamalar")) || []
 
 //* Harcama Formu
 
@@ -41,7 +41,12 @@ const yeniHarcama={
     id:new Date().getTime()
 };
 
-harcamaListesi.push(yeniHarcama)
+harcamaListesi.push(yeniHarcama);
+
+//TODO lacalStorage
+
+localStorage.setItem("harcamalar", JSON.stringify (harcamaListesi))
+
 
 harcamayiShowScreen(yeniHarcama)
 harcamaFormu.reset()
@@ -76,7 +81,11 @@ ekleFormu.addEventListener("submit",(e)=>{
     
     gelirler = gelirler + Number(gelirInput.value)
     
+    gelirInput.value=""
+
     gelirinizTable.textContent=giderler
+localStorage.setItem("gelirler", gelirler)
+    hesaplaAndGuncelle()
     
     })
 
